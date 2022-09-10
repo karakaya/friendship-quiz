@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/karakaya/friendship-quiz/main/app"
+	"github.com/karakaya/friendship-quiz/cmd/app"
 )
 
 func main() {
