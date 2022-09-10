@@ -1,13 +1,15 @@
 package main
 
 import (
-	"github.com/karakaya/friendship-quiz/pkg/db"
+	"log"
+
+	"github.com/karakaya/friendship-quiz/main/app"
 )
 
 func main() {
-	_, err := db.ConnectDB()
-	if err != nil {
-		panic(err)
-	}
+	logger := log.Logger{}
+	app := app.NewApp(logger, 80)
+
+	app.Run()
 
 }
