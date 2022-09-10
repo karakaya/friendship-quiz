@@ -14,12 +14,11 @@ type App struct {
 	port   int
 }
 
-func NewApp(logger log.Logger) *App {
-
+func NewApp(logger log.Logger, port int) *App {
 	return &App{
 		gin:    gin.Default(),
 		logger: logger,
-		port:   8080,
+		port:   port,
 	}
 }
 

@@ -8,7 +8,7 @@ type Quiz struct {
 }
 
 type Question struct {
-	Options []Option `json:"options"`
+	Options []Option `json:"option"`
 }
 
 type Option struct {
