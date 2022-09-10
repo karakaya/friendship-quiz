@@ -1,6 +1,13 @@
 package route
 
-import "github.com/gin-gonic/gin"
+import (
+	"fmt"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/karakaya/friendship-quiz/pkg/repository"
+	"github.com/karakaya/friendship-quiz/pkg/request"
+)
 
 func RegisterRoutes(g *gin.RouterGroup) {
 	res := resource{}
@@ -9,9 +16,17 @@ func RegisterRoutes(g *gin.RouterGroup) {
 
 }
 
-type resource struct{}
+type resource struct {
+	repo repository.Repository
+}
 
 func (r resource) create(g *gin.Context) {
+	var creqteQuizRequest request.CreateQuizRequest
+	if err := g.BindJSON(&creqteQuizRequest); err != nil {
+		g.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+	fmt.Println(creqteQuizRequest)
 	g.JSON(200, "")
 }
 

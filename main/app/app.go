@@ -3,7 +3,6 @@ package app
 import (
 	"fmt"
 	"log"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/karakaya/friendship-quiz/pkg/route"
@@ -15,17 +14,19 @@ type App struct {
 	port   int
 }
 
-func NewApp(logger log.Logger, port int) *App {
+func NewApp(logger log.Logger) *App {
+
 	return &App{
 		gin:    gin.Default(),
 		logger: logger,
-		port:   port,
+		port:   8080,
 	}
 }
 
 func (a *App) Run() {
 	a.routes()
-	http.ListenAndServe(fmt.Sprintf(":%d", a.port), a.gin.Handler())
+	a.gin.Run(fmt.Sprintf(":%d", a.port))
+	// http.ListenAndServe(fmt.Sprintf(":%d", a.port), a.gin.Handler())
 }
 
 func (a *App) routes() {
