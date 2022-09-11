@@ -39,9 +39,19 @@ func (r resource) create(g *gin.Context) {
 	userId, _ := uuid.FromBytes(uidPrimitive.Data)
 
 	g.JSON(201, gin.H{"_id": userId})
-
 }
 
 func (r resource) get(g *gin.Context) {
-	g.JSON(200, "")
+	id, ok := g.GetQuery("id")
+	if !ok {
+		g.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "uuid is required"})
+		return
+	}
+	uid, err := uuid.Parse(id)
+	if err != nil {
+		g.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "uuid is not valid"})
+		return
+	}
+
+	r.service.Get(context.Background(), uid)
 }
