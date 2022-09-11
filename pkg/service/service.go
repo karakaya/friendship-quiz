@@ -21,7 +21,8 @@ func NewService(r repository.Repository) QuizService {
 }
 
 func (q quizService) Create(ctx context.Context, obj interface{}) error {
-	return nil
+	return q.repo.Create(ctx, obj)
+
 }
 
 func (q quizService) Get(ctx context.Context, id uuid.UUID) (interface{}, error) {

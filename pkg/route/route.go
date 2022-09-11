@@ -1,23 +1,27 @@
 package route
 
 import (
-	"fmt"
+	"context"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/karakaya/friendship-quiz/pkg/repository"
 	"github.com/karakaya/friendship-quiz/pkg/request"
+	"github.com/karakaya/friendship-quiz/pkg/service"
 )
 
-func RegisterRoutes(g *gin.RouterGroup) {
-	res := resource{}
+func RegisterRoutes(g *gin.RouterGroup, service service.QuizService) {
+
+	res := resource{
+		service: service,
+	}
+
 	g.GET("/{id}", res.get)
 	g.POST("/", res.create)
 
 }
 
 type resource struct {
-	repo repository.Repository
+	service service.QuizService
 }
 
 func (r resource) create(g *gin.Context) {
@@ -26,7 +30,8 @@ func (r resource) create(g *gin.Context) {
 		g.AbortWithError(http.StatusBadRequest, err)
 		return
 	}
-	fmt.Println(creqteQuizRequest)
+
+	r.service.Create(context.Background(), creqteQuizRequest)
 	g.JSON(200, "")
 }
 
