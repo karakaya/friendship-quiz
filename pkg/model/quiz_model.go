@@ -3,8 +3,8 @@ package model
 import "github.com/google/uuid"
 
 type Quiz struct {
-	ID uuid.UUID `json:"_id"`
-	Question
+	ID        uuid.UUID `json:"_id" bson:"_id"`
+	Questions []Question
 }
 
 type Question struct {

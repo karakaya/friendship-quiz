@@ -5,8 +5,10 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/karakaya/friendship-quiz/pkg/request"
 	"github.com/karakaya/friendship-quiz/pkg/service"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func RegisterRoutes(g *gin.RouterGroup, service service.QuizService) {
@@ -31,8 +33,13 @@ func (r resource) create(g *gin.Context) {
 		return
 	}
 
-	r.service.Create(context.Background(), creqteQuizRequest)
-	g.JSON(200, "")
+	uid, _ := r.service.Create(context.Background(), creqteQuizRequest)
+
+	uidPrimitive, _ := uid.(primitive.Binary)
+	userId, _ := uuid.FromBytes(uidPrimitive.Data)
+
+	g.JSON(201, gin.H{"_id": userId})
+
 }
 
 func (r resource) get(g *gin.Context) {

@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
@@ -9,7 +10,7 @@ import (
 )
 
 type Repository interface {
-	Create(ctx context.Context, obj interface{}) error
+	Create(ctx context.Context, obj interface{}) (interface{}, error)
 	Get(ctx context.Context, id uuid.UUID) (interface{}, error)
 }
 
@@ -25,13 +26,14 @@ func NewRepository(mongoClient *mongo.Client, collection *mongo.Collection) Repo
 	}
 }
 
-func (r *repository) Create(ctx context.Context, obj interface{}) error {
-	_, err := r.collection.InsertOne(ctx, obj)
+func (r *repository) Create(ctx context.Context, obj interface{}) (interface{}, error) {
+	result, err := r.collection.InsertOne(ctx, obj)
 	if err != nil {
-		return err
+		fmt.Println(err)
+		return nil, err
 	}
 
-	return nil
+	return result.InsertedID, nil
 }
 
 func (r *repository) Get(ctx context.Context, id uuid.UUID) (interface{}, error) {
